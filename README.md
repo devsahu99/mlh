@@ -1,2 +1,92 @@
-# mlh
-To provides helper utilities for machine learning tasks. One major utility is calculation of weight of evidence
+# Machine Learning Helper
+
+This package usage multiple algorithms and parameters to accomodate different set of use cases to help in creating multiple machine learning algorithms.
+
+## 1.0 woe (Weight of Evidence):
+This function will help to calculate Weight of Evidence and Information Value, the charts can be displayed and coarse classing can also be done.
+
+### 1.1 Parameters:
+------------------------------------------------------------
+* **max_bin**: int
+    Maximum number of bins for numeric variables. The default is 10
+* **iv_threshold**: float
+    Threshold value for Information Value. Variables with higher than threshold will be considered for transformation
+* **ignore_threshold**: Boolean
+    This parameter controls whether the defined threshold should be considered or ignored. The default is 'True'
+
+------------------------------------------------------------
+### 1.2 Returns:
+DataFrame having weight of evidence of each column along with the target variable
+
+
+------------------------------------------------------------
+### 1.3 Approach:
+
+1. Create an instance of woe
+     my_woe = woe()
+
+2. Call fit method on the defined object by passing on dataframe and the target variable name
+     my_woe.fit(df,target)
+
+3. Call the transform method
+    transformed_df = my_woe.transform()
+
+------------------------------------------------------------
+## Example
+
+### Create Sample DataFrame
+```python
+from mlh import woe
+import pandas as pd
+import numpy as np
+import random
+
+seed=1456
+np.random.seed(seed)
+random.seed(seed)
+```
+```python
+rows = 1000
+```
+```python
+y = random.choices([0,1],k=rows,weights=[.7,.3])
+```
+```python
+x1 = random.choices(np.arange(20,40),k=rows)
+x2 = np.random.randint(1000,2000,size=rows)
+x3 = random.choices(np.arange(1,100),k=rows)
+x4 = random.choices(['m','f','u'],k=rows)
+x5 = random.choices(['a','b','c','d','e','f','g','h'],k=rows)
+```
+```python
+df = pd.DataFrame({'y':y,'x1':x1,'x2':x2,'x3':x3,'x4':x4,'x5':x5})
+```
+```python
+df.head()
+```
+### Fitting and prediction
+
+**Create Instance of Weight of Evidence Package**
+```python
+my_woe = woe()
+```
+**Fit the data with created instance**
+```python
+my_woe.fit(df,'y')
+```
+**Display the relevant charts**
+```python
+my_woe.getWoeCharts()
+```
+**Merge values of X3 Variable at 1 and 2 indices using the Weight of Evidence chart from the first Iteration**
+```python
+my_woe.reset_woe(2,(1,2),1)
+```
+**Get latest Iteration Information Value**
+```python
+my_woe.get_IV()
+```
+**Replace the original values in the Dataframe with Weight of Evidence**
+```python
+transformed_df = my_woe.transform()
+```
