@@ -1,0 +1,14 @@
+1. Create README.md, setup.py, package.py and License Files
+2. python3 -m pip install --user --upgrade setuptools wheel
+3. Move to: cd C:\Package\hybrid_recommender
+4. For testing: pip install .
+5. python -m compileall .
+3. for creating wheels: python setup.py sdist bdist_wheel
+4. Upload to pypi: python -m pip install --user --upgrade twine
+5. Upload to pypi: python -m twine upload dist/*
+6. User Name is: devsahu99
+7. Password is:  
+8. Check the uploaded 
+9. To uninstall: pip uninstall hybrid_recommender
+10. Goto the package install directory after #4 (pip install .) and copy the .pyc files to use the compiled files
+11. Instead of following the step of installation. The compiled files can be generated using : python -m compileall .
