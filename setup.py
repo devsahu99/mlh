@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mlh",
-    version = '0.0.1',
+    version = '0.0.2',
     author="Devendra Kumar Sahu",
     author_email="devsahu99@gmail.com",
     description="This package provides helper utilities for machine learning tasks. One major utility is calculation of weight of evidence",
@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/devsahu99/mlh",
     packages=['mlh'],
     install_requires=[
-        'pandas','scipy','IPython','matplotlib'
+        'pandas','scipy','IPython','matplotlib', 'snowflake-connector-python[pandas]', 's3fs', 'boto3', 'openpyxl', 'xlsxwriter', 'sagemaker', 'pyarrow', 'json', 'joblib', 'scikit-plot'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
