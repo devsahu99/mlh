@@ -13,7 +13,7 @@ class woe:
     # Author: Devendra Kumar Sahu
     # Email: devsahu99@gmail.com
     """
-    This function will help to calculate Weight of Evidence and Information Value, the charts can be displayed and coarse classing can also be done using reset_woe() function.
+    This function will help to calculate Weight of Evidence and Information Value, the charts can be displayed and coarse classing can also be done using Reset_Woe() function.
 
     Parameters:
     ------------------------------------------------------------
@@ -68,10 +68,10 @@ class woe:
     my_woe.fit(df,'y')
     
     ### Display the relevant charts
-    my_woe.getWoeCharts()
+    my_woe.Display_WOE_Charts()
     
     ### Get Information Value
-    my_woe.get_IV()
+    my_woe.Get_Information_Values()
     
     ### Replace the original values in the Dataframe with Weight of Evidence
     transformed_df = my_woe.transform()
@@ -252,7 +252,7 @@ class woe:
                 else:
                     iv_df = iv_df.append(conv,ignore_index=True,sort=True)
         self.__all_iv_df = iv_df
-        iv = self.get_IV()
+        iv = self.Get_Information_Values()
         self.__all_iv = iv
         if self.__threshold_ignore:
             self.__rel_iv = iv.reset_index(drop = True)
@@ -288,7 +288,7 @@ class woe:
             transf_df[rel_var_dict[final_rel_vars[i]]] = self.__replace_col(transf_df[final_rel_vars[i]],final_rel_vars[i])
         transf_df.drop(final_rel_vars,axis=1,inplace=True)
         return transf_df
-    def get_IV_df(self):
+    def Get_WOE_Values(self):
         """
         This Function returns the Information Values, Weight of Evidence and other details as a DataFrame
         
@@ -296,7 +296,7 @@ class woe:
         woe_max_iter = self.__all_iv_df.groupby(['VAR_NAME'])[['Iter']].agg('max').reset_index()
         latest_woe = pd.merge(self.__all_iv_df,woe_max_iter,on=['VAR_NAME','Iter'])
         return latest_woe
-    def set_threshold(self,iv_threshold=0.02,ignore_threshold=False):
+    def Set_Variable_Selection_Threshold(self, iv_threshold=0.02, ignore_threshold=False):
         """
         This Function sets the variable selection thresholds. The variables having Information Value higher 
         than this threshold are selected. 
@@ -317,7 +317,7 @@ class woe:
             self.__rel_iv = iv[iv['IV']>self.__threshold].reset_index(drop = True)
         self.__rel_iv_vars = [i for i in self.__rel_iv['VAR_NAME']]
         return None
-    def get_IV(self):
+    def Get_Information_Values(self):
         """
         This Function returns latest iteration Information Values as a pandas DataFrame. 
         
@@ -326,10 +326,10 @@ class woe:
         latest_woe = pd.merge(self.__all_iv_df,woe_max_iter,on=['VAR_NAME','Iter'])
         latest_iv = latest_woe.groupby(['VAR_NAME'])[['IV']].agg('max').reset_index()
         return latest_iv
-    def reset_woe(self,variable_index = 0,reset_indexes=(0,1),previous_iteration=0):
+    def Reset_Woe(self,variable_index = 0,reset_indexes=(0,1),previous_iteration=0):
         """
         This Function resets the weight of evidence of adjancent values where the chart is not smooth.
-        The smoothness can be observed using the getWoeCharts() function.
+        The smoothness can be observed using the Display_WOE_Charts() function.
         
         Parameters:
         ------------------------------------------------------------
@@ -419,7 +419,7 @@ class woe:
                         opval.append(minvec[i])
                         break
         return pd.Series(opval)
-    def getWoeCharts(self):
+    def Display_WOE_Charts(self):
         """
         This Function display all the WOE charts of the dataframe. The number of charts displayed depends
         upon the class hyper-parameter 'ignore_threshold'. To switch between all and relevant variables,

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mlh
-Version: 0.0.6
+Version: 0.0.7
 Summary: This package provides helper utilities for machine learning tasks. One major utility is calculation of weight of evidence
 Home-page: https://github.com/devsahu99/mlh
 Author: Devendra Kumar Sahu

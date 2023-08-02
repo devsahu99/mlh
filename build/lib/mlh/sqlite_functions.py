@@ -26,13 +26,13 @@ class sqlite_functions:
          mysql = sqlite_functions(db_path)
 
     2. Call table creation function
-         mysql.create_db_table(db_table_schema)
+         mysql.Create_DB_Table(db_table_schema)
 
     3. Insert values to the created table
-        mysql.insert_values_to_table(df, table_name)
+        mysql.Insert_Values_To_Table(df, table_name)
     
     4. Extract saved data
-        mysql.db_extract_records(query)
+        mysql.Extract_DB_Records(query)
         
     ------------------------------------------------------------    
     """
@@ -55,7 +55,7 @@ class sqlite_functions:
                 sqlite3_conn.close()
         return None
     
-    def create_db_table(self, tablemaps):
+    def Create_DB_Table(self, tablemaps):
         """
         This Function creates database table.
         
@@ -71,7 +71,7 @@ class sqlite_functions:
         
         mysql = sqlite_functions(db_path)
         table_schema = 'users(USERID INTEGER, USER_NAME TXT, LAST_NAME TXT, ENTER_DATE REAL)'
-        mysql.create_db_table(table_schema)
+        mysql.Create_DB_Table(table_schema)
         """
         conn = self.__connect_to_db()
         if conn is not None:
@@ -83,7 +83,7 @@ class sqlite_functions:
         conn.close()
         return None
     
-    def drop_db_table(self, table_name):
+    def Drop_DB_Table(self, table_name):
         """
         This Function drops the created database table.
         
@@ -98,7 +98,7 @@ class sqlite_functions:
         Example:
         
         mysql = sqlite_functions(db_path)
-        mysql.drop_db_table('users')
+        mysql.Drop_DB_Table('users')
         """
         conn = self.__connect_to_db()
         try:
@@ -110,7 +110,7 @@ class sqlite_functions:
             print(f"Can Not Delete {table_name} due to:- {err}")
         return None
     
-    def db_delete_records(self, query, args=[]):
+    def Delete_DB_Records(self, query, args=[]):
         """
         This Function delete certain records from the database table.
         
@@ -125,7 +125,7 @@ class sqlite_functions:
         Example:
         
         query = 'DELETE FROM USERS where USERID>=5'
-        mysql.db_delete_records(query)
+        mysql.Delete_DB_Records(query)
         """
         conn = self.__connect_to_db()
         try:
@@ -137,7 +137,7 @@ class sqlite_functions:
             print(f"Cannot delete records for {query} due to:- {err}")
         return None
     
-    def db_extract_records(self, query, args=[]):
+    def Extract_DB_Records(self, query, args=[]):
         """
         This Function queries the database table and return the results into a pandas dataframe.
         
@@ -152,7 +152,7 @@ class sqlite_functions:
         Example:
         
         query = 'select * from USERS where USERID>=2'
-        mysql.db_extract_records(query)
+        mysql.Extract_DB_Records(query)
         """
         conn = self.__connect_to_db()
         try:
@@ -177,7 +177,7 @@ class sqlite_functions:
             column_names.append(name[1])
         return column_names
     
-    def insert_values_to_table(self, df, table_name):
+    def Insert_Values_To_Table(self, df, table_name):
         """
         This Function inserts records to the database table.
         
@@ -193,7 +193,7 @@ class sqlite_functions:
         None
         
         Example:
-        mysql.insert_values_to_table(df, 'USERS')
+        mysql.Insert_Values_To_Table(df, 'USERS')
         """
         conn = self.__connect_to_db()
         if conn is not None:
@@ -211,7 +211,7 @@ class sqlite_functions:
             print('Connection to database failed')
         return None
     
-    def insert_unique_to_table(self, df, table_name):
+    def Insert_Unique_To_Table(self, df, table_name):
         """
         This Function inserts unique records to the database table.
         
@@ -227,7 +227,7 @@ class sqlite_functions:
         None
         
         Example:
-        mysql.insert_unique_to_table(df, 'USERS')
+        mysql.Insert_Unique_To_Table(df, 'USERS')
         """
         conn = self.__connect_to_db()
         if conn is not None:
@@ -243,7 +243,7 @@ class sqlite_functions:
             print('Connection to database failed')
         return None
     
-    def killSqlCon(self):
+    def Kill_Sql_Connection(self):
         """
         This Function kills the sql connection.
 
@@ -259,7 +259,7 @@ class sqlite_functions:
         sqlite3_conn.close()
         return 'Connection Closed'
 
-    def pandas_to_sql_query(self, df, tableName):
+    def Pandas_To_Sql_Query(self, df, tableName):
         """
         This Function converts the dataframe to sql queries schema for creating SQL table schema
         
@@ -276,7 +276,7 @@ class sqlite_functions:
         
         Example:
         
-        mysql.pandas_to_sql_query(df, 'USERS')
+        mysql.Pandas_To_Sql_Query(df, 'USERS')
         
         """
         df_dict = df.dtypes.to_dict()
