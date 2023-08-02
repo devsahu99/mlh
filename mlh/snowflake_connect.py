@@ -225,7 +225,7 @@ class snowflake_connect:
         result = cursor.fetchone()
         return result
 
-    def getAllSFTablesList(self, d_params=None):
+    def Fetch_All_Table_Names(self, d_params=None):
         """
         This Function returns the list of tables in the database schema
         
@@ -254,7 +254,7 @@ class snowflake_connect:
         ctx.close()
         return [x[1] for x in all_tables]
 
-    def dropSFTablesList(self, tables_list, d_params=None):
+    def Drop_Tables_From_DB(self, tables_list, d_params=None):
         """
         This Function drops the mentioned tables from the snowflake database
         

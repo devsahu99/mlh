@@ -4,6 +4,7 @@ import dateutil
 from dateutil.relativedelta import relativedelta
 import calendar
 from datetime import datetime
+from openpyxl import load_workbook
 
 class common_utils:
     # !/usr/bin/env python
@@ -116,7 +117,7 @@ class common_utils:
         dt = self.getLastNQuarters(quarterNG, n)
         return [self.Get_Quarter_End_Date(x) for x in pd.to_datetime(pd.Series(dt))]
 
-    def Date_to_Quarter_Start_Date(self, InputDate):
+    def Date_To_Quarter_Start_Date(self, InputDate):
         """
         This function returns any date to its quarter start date. Helpful in cases where quarterly trends are required
 
@@ -145,3 +146,28 @@ class common_utils:
             print(datetime.now().replace(microsecond=0), ex)
             sys.exit()
         return None
+
+    def Write_To_Excel(self, df, workbook, sheet_name='Sheet1'):
+        """
+        This utility helps in saving the output into excel file worksheets.
+
+        Parameters:
+        ------------------------------------------------------------
+        df: Pandas Dataframe
+            The reference to pandas dataframe
+        workbook: Excel Path
+            Reference to excel workbook
+        sheet_name: String
+            name of the worksheet in which the dataframe should be saved. Default is 'Sheet1'
+        """
+        try:
+            book = load_workbook(workbook)
+            writer = pd.ExcelWriter(workbook, engine = 'openpyxl')
+            writer.book = book
+            writer.sheets = dict((ws.title, ws) for ws in book.worksheets)  
+            df.to_excel(writer, sheet_name = sheet_name, index=False)
+        except:
+            writer = pd.ExcelWriter(workbook, engine = 'openpyxl')
+            df.to_excel(writer, sheet_name = sheet_name, index=False)
+        writer.save()
+        writer.close()

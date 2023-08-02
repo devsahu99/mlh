@@ -9,7 +9,6 @@ from IPython.display import display, HTML, Markdown
 import matplotlib.pyplot as plt
 from sklearn.model_selection import GridSearchCV, StratifiedKFold, RandomizedSearchCV, train_test_split
 from sklearn.metrics import accuracy_score,classification_report,confusion_matrix,roc_curve,auc,precision_recall_curve,make_scorer,recall_score,precision_score
-from openpyxl import load_workbook
 import scikitplot as skplt
 
 class support:
@@ -38,7 +37,7 @@ class support:
     pred_var='Survived'
 
     # To get the dropping features
-    myhelp.dropFeatures(df,pred_var,missing_threshold=.09)
+    myhelp.Get_Drop_Feature_Names(df,pred_var,missing_threshold=.09)
 
     # For grid search to obtain best hyper-parameters
     df = pd.get_dummies(df,drop_first=True)
@@ -63,19 +62,16 @@ class support:
     pred_prob = model_xgb.predict_proba(X_test)
 
     # Get Precision-Recall Scores
-    pr_scores = myhelp.getPRA(pred_prob,y_test)
-
-    # Save the precision-recall scores into excel sheet
-    myhelp.save_excel(pr_scores,'text.xlsx')
+    pr_scores = myhelp.Get_Precision_Recall_Values(pred_prob,y_test)
 
     # Get confusion-matrix and other plots
-    myhelp.modelplot(pred_prob,y_test,rocplot=True)
+    myhelp.Model_Output_Plots(pred_prob,y_test,rocplot=True)
     
     """
     def __init__(self):
         #initiating the class
         self.__mode=1
-    def gs_find(self,df,pred_var,clf,param_grid,refit_score='precision_score',random_search=True,folds=10,iters=20,train_split=.3,split_state=99):
+    def Grid_Search(self,df,pred_var,clf,param_grid,refit_score='precision_score',random_search=True,folds=10,iters=20,train_split=.3,split_state=99):
         """
         This helps is doing grid search. The default functionality is defined to 
         work on all the available cores for faster searching.
@@ -134,7 +130,7 @@ class support:
         pred_var='Survived'
 
         # To get the dropping features
-        myhelp.dropFeatures(df,pred_var,missing_threshold=.09)
+        myhelp.Get_Drop_Feature_Names(df,pred_var,missing_threshold=.09)
 
         # For grid search to obtain best hyper-parameters
         df = pd.get_dummies(df,drop_first=True)
@@ -149,7 +145,7 @@ class support:
         'min_child_weight': [.1,1,20], #.1,1,20
         }
 
-        grid_xg_ps = myhelp.gs_find(df,pred_var,model_xgb,param_grid,random_search=False)
+        grid_xg_ps = myhelp.Grid_Search(df,pred_var,model_xgb,param_grid,random_search=False)
         
         """
         X_train, X_test, y_train, y_test = train_test_split(df.drop(pred_var,axis=1), df[pred_var], test_size=train_split, random_state=split_state)
@@ -170,36 +166,11 @@ class support:
         print(f'\nConfusion matrix of Random Forest optimized for {refit_score} on the test data')
         print(pd.DataFrame(confusion_matrix(y_test, y_pred),columns=['pred_neg', 'pred_pos'], index=['neg', 'pos']))
         return grid_search
-
-    def save_excel(self,df,wrkbook,wrksheet='Sheet1'):
-        """
-        This utility helps in saving the output into excel file worksheets.
-
-        Parameters:
-        ------------------------------------------------------------
-        df: Pandas Dataframe
-            The reference to pandas dataframe
-        wrkbook: Excel Path
-            Reference to excel workbook
-        wrksheet: String
-            name of the worksheet in which the dataframe should be saved. Default is 'Sheet1'
-        """
-        try:
-            book = load_workbook(wrkbook)
-            writer = pd.ExcelWriter(wrkbook, engine = 'openpyxl')
-            writer.book = book
-            writer.sheets = dict((ws.title, ws) for ws in book.worksheets)  
-            df.to_excel(writer, sheet_name = wrksheet,index=False)
-        except:
-            writer = pd.ExcelWriter(wrkbook, engine = 'openpyxl')
-            df.to_excel(writer, sheet_name = wrksheet,index=False)
-        writer.save()
-        writer.close()
     
     def __adjusted_classes(self, y_scores, t):
         return [1 if y >= t else 0 for y in y_scores]
 
-    def modelplot(self,pred_probs,y_test,t=0.5,cf_matrix=True,rocplot=False,skplot=False,prcplot=False,thrplot=False):
+    def Model_Output_Plots(self,pred_probs,y_test,t=0.5,cf_matrix=True,rocplot=False,skplot=False,prcplot=False,thrplot=False):
         """
         This utility prints confusion matrix and displays multiple relevant charts.
 
@@ -287,7 +258,7 @@ class support:
             plt.legend(loc='best')
             plt.show()
     # Add prediction probability to dataframe
-    def getPRA(self,pred_prob,y_test):
+    def Get_Precision_Recall_Values(self,pred_prob,y_test):
         """
         This utility helps is getting precision-recall values at multiple thresholds.
 
@@ -383,7 +354,7 @@ class support:
                 colsToRemove.append(col)
         return colsToRemove
     
-    def dropFeatures(self,df,pred_var,missing_threshold=.95):
+    def Get_Drop_Feature_Names(self,df,pred_var,missing_threshold=.95):
         """
         This utility helps is getting non-essential features in a dataframe for classification problems.
         The function takes evaluates each features and returns curated names of features to be removed.
@@ -412,5 +383,5 @@ class support:
         colsRemove.extend(self.__constance_columns())
         colsRemove.extend(self.__drop_sparse())
         colsRemove.extend(self.__getmissing())
-        dropCols = {'dropFeatures':list(set(colsRemove)),'duplicates':self.__duplicate_columns()}
+        dropCols = {'Drop_Features':list(set(colsRemove)),'duplicates':self.__duplicate_columns()}
         return dropCols
