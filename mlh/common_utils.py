@@ -114,7 +114,7 @@ class common_utils:
             cmf.Get_Last_N_Quarter_Dates('202310', n=5)
         ------------------------------------------------------------    
         """
-        dt = self.getLastNQuarters(quarterNG, n)
+        dt = self.Get_Last_N_Quarters(quarterNG, n)
         return [self.Get_Quarter_End_Date(x) for x in pd.to_datetime(pd.Series(dt))]
 
     def Date_To_Quarter_Start_Date(self, InputDate):
