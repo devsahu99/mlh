@@ -220,7 +220,7 @@ class snowflake_connect:
         return None
     
     def __checkDBTables(self, cursor, tablename):
-        stmt = "SHOW TABLES LIKE '%s' "% ('%'+str(tablename)+'%')
+        stmt = "SHOW TABLES LIKE '%s' "% (str(tablename))
         cursor.execute(stmt)
         result = cursor.fetchone()
         return result
